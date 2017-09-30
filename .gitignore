@@ -213,3 +213,5 @@ venv.bak/
 out
 gen
 
+# because the file is to big
+/resources/sudoku.csv

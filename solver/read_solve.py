@@ -6,7 +6,7 @@ import solver
 def load_sudokus(N):
     quizzes = np.zeros((N, 81), np.int32)
     solutions = np.zeros((N, 81), np.int32)
-    for i, line in enumerate(open('sudoku.csv', 'r').read().splitlines()[1:N+1]):
+    for i, line in enumerate(open('..\\resources\\sudoku.csv', 'r').read().splitlines()[1:N+1]):
         quiz, solution = line.split(",")
         for j, q_s in enumerate(zip(quiz, solution)):
             q, s = q_s
