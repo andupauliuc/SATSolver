@@ -7,7 +7,7 @@ from statistic import Statistic
 def load_sudokus(N):
     quizzes = np.zeros((N, 81), np.int32)
     solutions = np.zeros((N, 81), np.int32)
-    for i, line in enumerate(open('..\\resources\\sudoku.csv', 'r').read().splitlines()[1:N + 1]):
+    for i, line in enumerate(open('../resources/sudoku.csv', 'r').read().splitlines()[1:N + 1]):
         quiz, solution = line.split(",")
         for j, q_s in enumerate(zip(quiz, solution)):
             q, s = q_s
@@ -18,8 +18,8 @@ def load_sudokus(N):
     return quizzes, solutions
 
 
-def get_meaningful_statistics(capturedtext):
-    for line in capturedtext.split('\n'):
+def get_meaningful_statistics(captured_text):
+    for line in captured_text.split('\n'):
         if len(line) >= 3 and line[2] == '1':
             status_list = line.split(" ")
             status_list = list(filter("".__ne__, status_list))
