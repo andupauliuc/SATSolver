@@ -9,6 +9,7 @@ all necessary information.
 """
 import pycosat
 
+from c_stream_capturer import OutputGrabber
 
 def v(i, j, d):
     """
@@ -74,8 +75,11 @@ def solve(grid):
             if d:
                 clauses.append([v(i, j, d)])
 
-    # solve the SAT problem
-    sol = set(pycosat.solve(clauses))
+    # wrap the method in an "OutputGrabber" to capture c-level statistics stream
+    out = OutputGrabber()
+    out.start()
+    sol = set(pycosat.solve(clauses, verbose=1))  # solve the SAT problem
+    out.stop()
 
     def read_cell(i, j):
         # return the digit of cell i, j according to the solution
@@ -87,6 +91,7 @@ def solve(grid):
         for j in range(1, 10):
             grid[i - 1][j - 1] = read_cell(i, j)
 
+    return out.capturedtext
 
 if __name__ == '__main__':
     from pprint import pprint
