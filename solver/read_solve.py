@@ -2,6 +2,7 @@ from pprint import pprint
 import numpy as np
 import solver
 from statistic import Statistic
+from sudoku import Sudoku
 
 
 def load_sudokus(N):
@@ -37,7 +38,9 @@ if __name__ == '__main__':
         quiz = quizzes[i].tolist()
         solution = solutions[i].tolist()
 
-        print(str(get_meaningful_statistics(solver.solve(quiz))))
+        sudoku = Sudoku(quiz, solution, get_meaningful_statistics(solver.solve(quiz)))
+
+        print(str(sudoku.statistics))
 
         # if quiz == solution:
         #     print("Quiz {0} gives good solution".format(i + 1))

@@ -8,54 +8,56 @@ encouraged to read the paper first.  The paper is very short, but contains
 all necessary information.
 """
 import pycosat
+import math
 
 from c_stream_capturer import OutputGrabber
 
-def v(i, j, d):
+
+def v(i, j, d, size):
     """
     Return the number of the variable of cell i, j and digit d,
     which is an integer in the range of 1 to 729 (including).
     """
-    return 81 * (i - 1) + 9 * (j - 1) + d
+    return (size ** 4) * (i - 1) + (size ** 2) * (j - 1) + d
 
 
-def sudoku_clauses():
+def sudoku_clauses(size):
     """
-    Create the (11745) Sudoku clauses, and return them as a list.
+    Create the (????) Sudoku clauses, and return them as a list.
     Note that these clauses are *independent* of the particular
     Sudoku puzzle at hand.
     """
     res = []
     # for all cells, ensure that the each cell:
-    for i in range(1, 10):
-        for j in range(1, 10):
+    for i in range(1, (size * size) + 1):
+        for j in range(1, (size * size) + 1):
             # denotes (at least) one of the 9 digits (1 clause)
-            res.append([v(i, j, d) for d in range(1, 10)])
+            res.append([v(i, j, d, size) for d in range(1, (size * size) + 1)])
             # does not denote two different digits at once (36 clauses)
-            for d in range(1, 10):
-                for dp in range(d + 1, 10):
-                    res.append([-v(i, j, d), -v(i, j, dp)])
+            for d in range(1, (size * size) + 1):
+                for dp in range(d + 1, (size * size) + 1):
+                    res.append([-v(i, j, d, size), -v(i, j, dp, size)])
 
     def valid(cells):
-        # Append 324 clauses, corresponding to 9 cells, to the result.
-        # The 9 cells are represented by a list tuples.  The new clauses
+        # Append ??? clauses, corresponding to 'size' cells, to the result.
+        # The '' cells are represented by a list tuples.  The new clauses
         # ensure that the cells contain distinct values.
         for i, xi in enumerate(cells):
             for j, xj in enumerate(cells):
                 if i < j:
-                    for d in range(1, 10):
-                        res.append([-v(xi[0], xi[1], d), -v(xj[0], xj[1], d)])
+                    for d in range(1, (size * size) + 1):
+                        res.append([-v(xi[0], xi[1], d, size), -v(xj[0], xj[1], d, size)])
 
     # ensure rows and columns have distinct values
-    for i in range(1, 10):
-        valid([(i, j) for j in range(1, 10)])
-        valid([(j, i) for j in range(1, 10)])
+    for i in range(1, (size * size) + 1):
+        valid([(i, j) for j in range(1, (size * size) + 1)])
+        valid([(j, i) for j in range(1, (size * size) + 1)])
     # ensure 3x3 sub-grids "regions" have distinct values
-    for i in 1, 4, 7:
-        for j in 1, 4 ,7:
-            valid([(i + k % 3, j + k // 3) for k in range(9)])
+    for i in range(1, (size * size), size):
+        for j in range(1, (size * size), size):
+            valid([(i + k % size, j + k // size) for k in range(size * size)])
 
-    assert len(res) == 81 * (1 + 36) + 27 * 324
+    # assert len(res) == 81 * (1 + 36) + 27 * 324  # todo: change the hardcoded values
     return res
 
 
@@ -63,9 +65,10 @@ def solve(grid):
     """
     solve a Sudoku grid inplace
     """
-    clauses = sudoku_clauses()
-    for i in range(1, 10):
-        for j in range(1, 10):
+    size = math.floor(math.sqrt(len(grid)))  # todo: check if grid length is a squared number.
+    clauses = sudoku_clauses(size)
+    for i in range(1, (size * size) + 1):
+        for j in range(1, (size * size) + 1):
             d = grid[i - 1][j - 1]
             # For each digit already known, a clause (with one literal).
             # Note:
@@ -73,7 +76,7 @@ def solve(grid):
             #     altogether (which would be more efficient).  However, for
             #     the sake of simplicity, we decided not to do that.
             if d:
-                clauses.append([v(i, j, d)])
+                clauses.append([v(i, j, d, size)])
 
     # wrap the method in an "OutputGrabber" to capture c-level statistics stream
     out = OutputGrabber()
@@ -81,17 +84,18 @@ def solve(grid):
     sol = set(pycosat.solve(clauses, verbose=1))  # solve the SAT problem
     out.stop()
 
-    def read_cell(i, j):
+    def read_cell(i, j, size):
         # return the digit of cell i, j according to the solution
-        for d in range(1, 10):
-            if v(i, j, d) in sol:
+        for d in range(1, (size * size) + 1):
+            if v(i, j, d, size) in sol:
                 return d
 
-    for i in range(1, 10):
-        for j in range(1, 10):
-            grid[i - 1][j - 1] = read_cell(i, j)
+    for i in range(1, (size * size) + 1):
+        for j in range(1, (size * size) + 1):
+            grid[i - 1][j - 1] = read_cell(i, j, size)
 
     return out.capturedtext
+
 
 if __name__ == '__main__':
     from pprint import pprint
