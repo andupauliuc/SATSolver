@@ -112,9 +112,8 @@ def plot_conflict_distribution_for(size):
 
 
 if __name__ == '__main__':
-    pass
     # plot_memory()
     # plot_learned_clauses()
     # plot_run_time()
-    # plot_conflicts()
-    plot_conflict_distribution_for(5)
+    plot_conflicts()
+    # plot_conflict_distribution_for(5)

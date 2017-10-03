@@ -33,7 +33,7 @@ def get_meaningful_statistics(captured_text):
 
 
 if __name__ == '__main__':
-    dim = 6
+    dim = 5
     noq = 10
     quizzes, solutions = load_sudokus(dim, noq)
     standard_clauses = solver.sudoku_clauses(dim)
@@ -43,10 +43,10 @@ if __name__ == '__main__':
                         'agility':[], 'MB':[]})
     df = df [['seconds', 'level', 'variables', 'used', 'original', 'conflicts',
               'learned', 'limit', 'agility', 'MB']]
-    # df.to_csv('stats_6.csv', index=False, sep=',')
+    # df.to_csv('stats_5.csv', index=False, sep=',')
 
 
-    with open('stats_6.csv', 'a') as f:
+    with open('stats_5.csv', 'a') as f:
         writer = csv.writer(f)
         for i in np.arange(0, noq):
             quiz = quizzes[i].tolist()
