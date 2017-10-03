@@ -1,7 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from gaussian_distribution import get_mean_and_std
 from statistic import Statistic
+from scipy.stats import norm
+
+
+def plot_data():
+    sizes = range(2, 7)
+    means, stds = get_means_stds_for(sizes, file_name_templat="stats_{}")
+    plot_statistics(sizes, means, stds)
 
 
 def plot_statistics(sizes, mean_list, std_list):
@@ -19,10 +25,6 @@ def plot_statistics(sizes, mean_list, std_list):
     plt.show()
 
 
-if __name__ == '__main__':
-    plot_statistics([2, 3, 4, 5, 6], [1, 4, 8, 15, 20], [1, 2, 4, 6, 9])
-
-
 def get_statistics(file_name):
     statistics = []
     for i, line in enumerate(open(file_name, 'r').read().splitlines()):
@@ -33,12 +35,12 @@ def get_statistics(file_name):
     return statistics
 
 
-def get_means_stds_for(sizes):
+def get_means_stds_for(sizes, file_name_templat):
     means = []
     stds = []
     for size in sizes:
         conflicts = []
-        for statistic in get_statistics("stats_{}".format(size)):
+        for statistic in get_statistics(file_name_templat.format(size)):
             conflicts.append(statistic.conflicts)
         mean, std = get_mean_and_std(conflicts)
         means.append(mean)
@@ -47,7 +49,27 @@ def get_means_stds_for(sizes):
     return means, stds
 
 
-def plot_data():
-    sizes = range(2, 7)
-    means, stds = get_means_stds_for(sizes)
-    plot_statistics(sizes, means, stds)
+def plot_conflict_distribution(data):
+    # Fit a normal distribution to the data:
+    mu, std = norm.fit(data)
+
+    # Plot the histogram.
+    plt.hist(data, bins=25, normed=True, alpha=0.6, color='g')
+
+    # Plot the PDF.
+    xmin, xmax = plt.xlim()
+    x = np.linspace(xmin, xmax, 100)
+    p = norm.pdf(x, mu, std)
+    plt.plot(x, p, 'k', linewidth=2)
+    title = "Fit results: mu = %.2f,  std = %.2f" % (mu, std)
+    plt.title(title)
+
+    plt.show()
+
+
+def get_mean_and_std(data):
+    norm.fit(data)
+
+
+if __name__ == '__main__':
+    plot_statistics([2, 3, 4, 5, 6], [1, 4, 8, 15, 20], [1, 2, 4, 6, 9])
