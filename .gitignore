@@ -112,3 +112,5 @@ gen
 
 # because the file is to big
 /resources/sudoku.csv
+
+.DS_Store
