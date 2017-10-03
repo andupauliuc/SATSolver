@@ -5,17 +5,17 @@ from statistic import Statistic
 from sudoku import Sudoku
 
 
-def load_sudokus(N):
-    quizzes = np.zeros((N, 81), np.int32)
-    solutions = np.zeros((N, 81), np.int32)
-    for i, line in enumerate(open('../resources/sudoku.csv', 'r').read().splitlines()[1:N + 1]):
+def load_sudokus(dim, N):
+    quizzes = np.zeros((N, dim ** 4), np.int32)
+    solutions = np.zeros((N, dim ** 4), np.int32)
+    for i, line in enumerate(open('../resources/sudoku_3.csv', 'r').read().splitlines()[1:N + 1]):
         quiz, solution = line.split(",")
-        for j, q_s in enumerate(zip(quiz, solution)):
-            q, s = q_s
+        for j, q_s in enumerate(zip(quiz.split(' '), solution.split(' '))):
+            q, s = q_s[0], q_s[1]
             quizzes[i, j] = q
             solutions[i, j] = s
-    quizzes = quizzes.reshape((-1, 9, 9))
-    solutions = solutions.reshape((-1, 9, 9))
+    quizzes = quizzes.reshape((-1, dim ** 2, dim ** 2))
+    solutions = solutions.reshape((-1, dim ** 2, dim ** 2))
     return quizzes, solutions
 
 
@@ -31,8 +31,9 @@ def get_meaningful_statistics(captured_text):
 
 
 if __name__ == '__main__':
-    noq = 70
-    quizzes, solutions = load_sudokus(noq)
+    dim = 3
+    noq = 10
+    quizzes, solutions = load_sudokus(dim, noq)
 
     for i in np.arange(0, noq):
         quiz = quizzes[i].tolist()
@@ -40,7 +41,11 @@ if __name__ == '__main__':
 
         sudoku = Sudoku(quiz, solution, get_meaningful_statistics(solver.solve(quiz)))
 
-        print(str(sudoku.statistics))
+        # print(sudoku.statistics)
+        if sudoku.puzzle == sudoku.solution:
+            print('all good')
+        else:
+            print('not good')
 
         # if quiz == solution:
         #     print("Quiz {0} gives good solution".format(i + 1))
