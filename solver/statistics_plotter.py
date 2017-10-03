@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from statistic import Statistic
 from scipy.stats import norm
 
-FILE_NAME_TEMPLATE = "stats_{}"
+FILE_NAME_TEMPLATE = "stats_{}.csv"
 
 
 def plot_data():
@@ -29,11 +29,11 @@ def plot_statistics(sizes, mean_list, std_list):
 
 def get_statistics(file_name):
     statistics = []
-    for i, line in enumerate(open(file_name, 'r').read().splitlines()):
+    for i, line in enumerate(open(file_name, 'r').read().splitlines()[1:]):
         tokens = line.split(",")
         statistics.append(
-            Statistic(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], tokens[6],
-                      tokens[7], tokens[8], tokens[9]))
+            Statistic(float(tokens[0]), float(tokens[1]), float(tokens[2]), float(tokens[3]), float(tokens[4]), float(tokens[5]), float(tokens[6]),
+                      float(tokens[7]), float(tokens[8]), float(tokens[9])))
     return statistics
 
 
@@ -70,8 +70,9 @@ def plot_conflict_distribution(data):
 
 
 def get_mean_and_std(data):
-    norm.fit(data)
+    return norm.fit(data)
 
 
 if __name__ == '__main__':
-    plot_statistics([2, 3, 4, 5, 6], [1, 4, 8, 15, 20], [1, 2, 4, 6, 9])
+    plot_data()
+    # plot_statistics([2, 3, 4, 5, 6], [1, 4, 8, 15, 20], [1, 2, 4, 6, 9])
