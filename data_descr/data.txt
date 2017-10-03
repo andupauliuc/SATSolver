@@ -1,0 +1,109 @@
+  Sudoku puzzle description:
+-----------------------------------
+Puzzle size 2x2
+Cells: 16
+Givens mean: 4.987797559511902
+Ratio: 0.3117373474694939
+Stdev: 0.9999255474514762
+Givens min: 4
+Givens max: 6
+-----------------------------------
+-----------------------------------
+Puzzle size 3x3
+Cells: 81
+Givens mean: 28.04280856171234
+Ratio: 0.34620751310755976
+Stdev: 2.829976951755651
+Givens min: 19
+Givens max: 40
+-----------------------------------
+-----------------------------------
+Puzzle size 4x4
+Cells: 256
+Givens mean: 109.124824964993
+Ratio: 0.4262688475195039
+Stdev: 10.855735407728828
+Givens min: 96
+Givens max: 126
+-----------------------------------
+-----------------------------------
+Puzzle size 5x5
+Cells: 625
+Givens mean: 293.0396
+Ratio: 0.46886336
+Stdev: 9.598980770894377
+Givens min: 273
+Givens max: 320
+-----------------------------------
+-----------------------------------
+Puzzle size 6x6
+Cells: 1296
+Givens mean: 670.1360907271514
+Ratio: 0.5170803169190983
+Stdev: 17.89593067014979
+Givens min: 636
+Givens max: 714
+-----------------------------------
+
+
+  SAT-solver statistics:
+-------------------------------------------
+Puzzle size 2x2
+Time mean: 0.0
+Time min: 0.0
+Time max: 0.0
+Conflicts mean: 0.0
+Conflicts min: 0
+Conflicts max: 0
+Learned mean: 0.0
+Learned min: 0
+Learned max: 0
+MB mean: 0.0
+MB min: 0.0
+MB max: 0.0
+-------------------------------------------
+-------------------------------------------
+Puzzle size 3x3
+Time mean: 0.0
+Time min: 0.0
+Time max: 0.0
+Conflicts mean: 17.5815
+Conflicts min: 1
+Conflicts max: 114
+Learned mean: 1.056
+Learned min: 0
+Learned max: 109
+MB mean: 0.2999999999999999
+MB min: 0.3
+MB max: 0.3
+-------------------------------------------
+-------------------------------------------
+Puzzle size 4x4
+Time mean: 0.00725
+Time min: 0.0
+Time max: 0.1
+Conflicts mean: 516.451
+Conflicts min: 2
+Conflicts max: 2682
+Learned mean: 452.8125
+Learned min: 0
+Learned max: 2236
+MB mean: 2.85995
+MB min: 2.8
+MB max: 3.2
+-------------------------------------------
+-------------------------------------------
+Puzzle size 5x5
+Time mean: 1.1483
+Time min: 0.0
+Time max: 75.4
+Conflicts mean: 22041.457
+Conflicts min: 0.0
+Conflicts max: 726000.0
+Learned mean: 3575.049
+Learned min: 0
+Learned max: 33620
+MB mean: 18.621
+MB min: 18.0
+MB max: 26.5
+-------------------------------------------
