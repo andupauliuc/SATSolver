@@ -61,12 +61,13 @@ def sudoku_clauses(size):
     return res
 
 
-def solve(grid):
+def solve(grid, standard_clauses):
     """
     solve a Sudoku grid inplace
     """
     size = math.floor(math.sqrt(len(grid)))  # todo: check if grid length is a squared number.
-    clauses = sudoku_clauses(size)
+    # clauses = sudoku_clauses(size)
+    clauses = list(standard_clauses)
     for i in range(1, (size * size) + 1):
         for j in range(1, (size * size) + 1):
             d = grid[i - 1][j - 1]

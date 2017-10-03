@@ -3,12 +3,14 @@ import numpy as np
 import solver
 from statistic import Statistic
 from sudoku import Sudoku
+import pandas as pd
+import csv
 
 
 def load_sudokus(dim, N):
     quizzes = np.zeros((N, dim ** 4), np.int32)
     solutions = np.zeros((N, dim ** 4), np.int32)
-    for i, line in enumerate(open('../resources/sudoku_3.csv', 'r').read().splitlines()[1:N + 1]):
+    for i, line in enumerate(open('../resources/sudoku_{}.csv'.format(dim), 'r').read().splitlines()[1:N + 1]):
         quiz, solution = line.split(",")
         for j, q_s in enumerate(zip(quiz.split(' '), solution.split(' '))):
             q, s = q_s[0], q_s[1]
@@ -31,27 +33,30 @@ def get_meaningful_statistics(captured_text):
 
 
 if __name__ == '__main__':
-    dim = 3
-    noq = 10
+    dim = 4
+    noq = 100
     quizzes, solutions = load_sudokus(dim, noq)
+    standard_clauses = solver.sudoku_clauses(dim)
 
-    for i in np.arange(0, noq):
-        quiz = quizzes[i].tolist()
-        solution = solutions[i].tolist()
+    df = pd.DataFrame({'seconds':[], 'level':[], 'variables':[], 'used':[],
+                        'original':[], 'conflicts':[], 'learned':[], 'limit':[],
+                        'agility':[], 'MB':[]})
+    df = df [['seconds', 'level', 'variables', 'used', 'original', 'conflicts',
+              'learned', 'limit', 'agility', 'MB']]
+    # df.to_csv('stats_5.csv', index=False, sep=',')
 
-        sudoku = Sudoku(quiz, solution, get_meaningful_statistics(solver.solve(quiz)))
 
-        # print(sudoku.statistics)
-        if sudoku.puzzle == sudoku.solution:
-            print('all good')
-        else:
-            print('not good')
+    with open('stats_4.csv', 'a') as f:
+        writer = csv.writer(f)
+        for i in np.arange(0, noq):
+            quiz = quizzes[i].tolist()
+            solution = solutions[i].tolist()
 
-        # if quiz == solution:
-        #     print("Quiz {0} gives good solution".format(i + 1))
-        #     pprint(quiz)
-        #
-        # else:
-        #     print("Quiz {0} sucks on solution".format(i + 1))
-        #     pprint(quiz)
-        #     pprint(solution)
+            sudoku = Sudoku(quiz, solution, get_meaningful_statistics(solver.solve(quiz, standard_clauses)))
+
+            if sudoku.puzzle == sudoku.solution:
+                print(i)
+                writer.writerow(sudoku.statistics.get_data())
+                f.flush()
+            else:
+                print('not good')

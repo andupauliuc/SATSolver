@@ -12,6 +12,20 @@ class Statistic:
         self.level = level
         self.seconds = seconds
 
+
+    def get_data(self):
+        return [self.seconds,
+                self.level,
+                self.variables,
+                self.used,
+                self.original,
+                self.conflicts,
+                self.learned,
+                self.limit,
+                self.agility,
+                self.MB]
+
+
     def __str__(self):
         return "[" + \
                self.seconds + ", " + \
