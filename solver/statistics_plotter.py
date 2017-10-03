@@ -3,10 +3,12 @@ import matplotlib.pyplot as plt
 from statistic import Statistic
 from scipy.stats import norm
 
+FILE_NAME_TEMPLATE = "stats_{}"
+
 
 def plot_data():
     sizes = range(2, 7)
-    means, stds = get_means_stds_for(sizes, file_name_templat="stats_{}")
+    means, stds = get_means_stds_for(sizes, FILE_NAME_TEMPLATE)
     plot_statistics(sizes, means, stds)
 
 
@@ -35,12 +37,12 @@ def get_statistics(file_name):
     return statistics
 
 
-def get_means_stds_for(sizes, file_name_templat):
+def get_means_stds_for(sizes, file_name_template):
     means = []
     stds = []
     for size in sizes:
         conflicts = []
-        for statistic in get_statistics(file_name_templat.format(size)):
+        for statistic in get_statistics(file_name_template.format(size)):
             conflicts.append(statistic.conflicts)
         mean, std = get_mean_and_std(conflicts)
         means.append(mean)
