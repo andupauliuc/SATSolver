@@ -43,7 +43,7 @@ if __name__ == '__main__':
                         'agility':[], 'MB':[]})
     df = df [['seconds', 'level', 'variables', 'used', 'original', 'conflicts',
               'learned', 'limit', 'agility', 'MB']]
-    df.to_csv('stats_6.csv', index=False, sep=',')
+    # df.to_csv('stats_6.csv', index=False, sep=',')
 
 
     with open('stats_6.csv', 'a') as f:
