@@ -15,13 +15,17 @@ def plot_data():
 def plot_statistics(sizes, mean_list, std_list):
     means = np.array(mean_list)
     stds = np.array(std_list)
-    plt.figure(figsize=(16, 10), dpi=80)
+    fig = plt.figure(figsize=(16, 10), dpi=80)
+
+    ax = fig.add_subplot(111)
     plt.xlabel('Sudoku size')
     plt.ylabel('Conflicts')
     plt.xticks(sizes)
     plt.scatter(sizes, means, s=50, facecolors='none', edgecolors='blue', linewidth=1.5, zorder=2)
     plt.plot(sizes, means, color='#07c607', linewidth=1.5, zorder=3)
     plt.fill_between(sizes, means - stds, means + stds, alpha=0.2, color='#ffb6c1')
+    for x, y in zip(sizes, means):  # <--
+        ax.annotate(str(y), xy=(x, y + 20000))
     # plt.xlim([0, 2 * np.pi])
     # plt.ylim([-1.5, 1.5])
     plt.show()
@@ -32,7 +36,8 @@ def get_statistics(file_name):
     for i, line in enumerate(open(file_name, 'r').read().splitlines()[1:]):
         tokens = line.split(",")
         statistics.append(
-            Statistic(float(tokens[0]), float(tokens[1]), float(tokens[2]), float(tokens[3]), float(tokens[4]), float(tokens[5]), float(tokens[6]),
+            Statistic(float(tokens[0]), float(tokens[1]), float(tokens[2]), float(tokens[3]),
+                      float(tokens[4]), float(tokens[5]), float(tokens[6]),
                       float(tokens[7]), float(tokens[8]), float(tokens[9])))
     return statistics
 
@@ -70,7 +75,8 @@ def plot_conflict_distribution(data):
 
 
 def get_mean_and_std(data):
-    return norm.fit(data)
+    mean, std = norm.fit(data)
+    return round(mean, 2), round(std, 2)
 
 
 if __name__ == '__main__':
